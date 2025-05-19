@@ -11,6 +11,8 @@ use App\Models\Company;
 use App\Models\JobVacancy;
 use App\Models\JobApplication;
 use App\Models\Resume;
+use Faker\Factory as Faker;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -18,6 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
+
         // Seed the root admin
         User::firstOrCreate([
             'email' => 'admin@admin.com'
@@ -41,7 +45,7 @@ class DatabaseSeeder extends Seeder
         foreach ($jobData['companies'] as $company) {
             // Create the company owner
             $owner = User::firstOrCreate([
-                'email' => fake()->unique()->safeEmail(),
+                'email' => $faker->unique()->safeEmail(),
             ], [
                 'name' => $company['name'],
                 'password' => Hash::make('12345678'),
@@ -86,9 +90,9 @@ class DatabaseSeeder extends Seeder
         foreach ($jobApplicationsData['jobApplications'] as $application) {
             // Create teh job-seeker applicant
             $applicant = User::firstOrCreate([
-                'email' => fake()->unique()->safeEmail(),
+                'email' => $faker->unique()->safeEmail(),
             ], [
-                'name' => fake()->name(),
+                'name' => $faker->name(),
                 'password' => Hash::make('12345678'),
                 'role' => 'job-seeker',
                 'email_verified_at' => now(),
